@@ -4,9 +4,9 @@ llr <- function(x, y, z, omega) {
 }
 
 compute_f_hat <- function(z, x, y, omega) {
-  Wz <- make_weight_matrix(z, x, omega)
+  Wz <- as.array(diag(make_weight_matrix(z,x,omega)), ncol=1,nrow=length(x))
   X <- make_predictor_matrix(x)
-  f_hat <- c(1, z) %*% solve(t(X) %*% Wz %*% X) %*% t(X) %*% Wz %*% y
+  f_hat = c(1,z) %*% solve(t(X) %*% apply(X,2,"*",Wz)) %*% t(X) %*% (Wz*y)
   return(f_hat)
 }
 
